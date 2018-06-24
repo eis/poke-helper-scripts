@@ -15,20 +15,95 @@ function sendStuff() {
   return false;
 }
 
+function createDefenderSelection() {
+  var dropDown = document.createElement('select');
+  dropDown.name = 'defender_id';
+  dropDown.options.add( new Option('Select defender', '-1', true, true));
+  for (var i in pokemon) {
+    var pokeName = pokemon[i].pokemonId;
+    var cleanPokeName = pokeName.charAt(0) + pokeName.slice(1).toLowerCase();
+    cleanPokeName = cleanPokeName.replace(/_([a-z]+)_form/, function(match, $1){
+      return " (" + $1.charAt(0).toUpperCase() + $1.slice(1) + " form)";
+    });
+    cleanPokeName = cleanPokeName.replace('_female', ' (female)');
+    cleanPokeName = cleanPokeName.replace('_male', ' (male)');
+    dropDown.options.add( new Option(cleanPokeName, pokeName, false, false) );
+  }
+  dropDown.onchange = function() {
+    createDefenderMoveSelection(dropDown.options[dropDown.selectedIndex].value);
+  };
+  document.getElementById('defender').appendChild(dropDown);
+}
+
+function createDefenderMoveSelection(selection) {
+  console.log("got selection " + selection);
+  for (var i in pokemon) {
+    var pokeName = pokemon[i].pokemonId;
+    if (pokeName === selection) {
+      var dropDownFast = document.createElement('select');
+      dropDownFast.name = 'defender_fastmove';
+      for (var j = 0; j < pokemon[i]['quickMoves'].length; j++) {
+        var moveName = pokemon[i]['quickMoves'][j];
+        moveName = moveName.replace('_FAST','');
+        moveName = moveName.replace('_', ' ');
+        moveName = moveName.charAt(0) + moveName.slice(1).toLowerCase();
+        dropDownFast.options.add(
+          new Option(moveName,pokemon[i]['quickMoves'][j],false, false));
+      }
+      var dropDownCharged = document.createElement('select');
+      dropDownCharged.name = 'defender_chargemove';
+      for (var j = 0; j < pokemon[i]['cinematicMoves'].length; j++) {
+        var moveName = pokemon[i]['cinematicMoves'][j];
+        moveName = moveName.replace('_', ' ');
+        moveName = moveName.charAt(0) + moveName.slice(1).toLowerCase();
+        dropDownCharged.options.add(
+          new Option(moveName,pokemon[i]['cinematicMoves'][j],false, false));
+      }
+      var labelFast = document.createElement('label');
+      labelFast.textContent = ' Fast Move: ';
+      var labelCharged = document.createElement('label');
+      labelCharged.textContent = ' Charge Move: ';
+      var labelCp = document.createElement('label');
+      labelCp.textContent = ' CP: ';
+      var inputCp = document.createElement('input');
+      inputCp.type = 'text';
+      inputCp.name = 'defender_cp';
+
+      var defFields = document.getElementById('defender');
+      defFields.appendChild(labelFast);
+      defFields.appendChild(dropDownFast);
+      defFields.appendChild(labelCharged);
+      defFields.appendChild(dropDownCharged);
+      defFields.appendChild(labelCp);
+      defFields.appendChild(inputCp);
+      break;
+    }
+  }
+  var button = document.createElement('input');
+  button.type = 'button';
+  button.value = 'Get fight stats';
+  button.onclick = sendStuff;
+  document.getElementById('defender').appendChild(button);
+}
+
 window.onload = function() {
-  document.getElementById('sendbutton').onclick = sendStuff;
   document.getElementById('stufftobesent').value = JSON.stringify(pokemons);
+  createDefenderSelection();
 }
 </script>
 <script type="text/javascript" src="../pokemons.jsonp"></script>
+<script type="text/javascript" src="../pokemon-basedata.js"></script>
 </head>
 <body>
-<form>
-  <input type="button" id="sendbutton" value="Get fight stats"/><br />
-  <textarea rows="30" cols="80" id="stufftobesent">
+<form id="mainform">
+  <fieldset id="defender">
 
-  </textarea>
-<br />
+  </fieldset>
+  <fieldset>
+    <textarea rows="30" cols="80" id="stufftobesent">
+
+    </textarea>
+  </fieldset>
 </form>
 <p id="results"></p>
 </body>
