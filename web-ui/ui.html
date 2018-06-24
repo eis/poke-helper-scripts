@@ -70,6 +70,9 @@ function createDefenderMoveSelection(selection) {
       inputCp.name = 'defender_cp';
 
       var defFields = document.getElementById('defender');
+      while(defFields.childElementCount > 1) {
+        defFields.removeChild(defFields.lastChild);
+      }
       defFields.appendChild(labelFast);
       defFields.appendChild(dropDownFast);
       defFields.appendChild(labelCharged);
