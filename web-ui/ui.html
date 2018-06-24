@@ -5,19 +5,31 @@ function reqListener () {
   document.getElementById('results').innerHTML = this.responseText;
 }
 function sendStuff() {
-  var stuff = document.getElementById('stufftobesent').innerHTML.trim();
+  var defIdElem = document.getElementById('defender_id');
+  var fastMoveElem = document.getElementById('defender_fastmove');
+  var chargedMoveElem = document.getElementById('defender_chargemove');
+  var cpElem = document.getElementById('defender_cp');
+  var stuff = {
+    'defenderId': defIdElem.options[defIdElem.selectedIndex].value,
+    'fastMove': fastMoveElem.options[fastMoveElem.selectedIndex].value,
+    'chargedMove': chargedMoveElem.options[chargedMoveElem.selectedIndex].value,
+    'defenderCp': cpElem.value,
+    'pokemons': pokemons
+  };
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", reqListener);
-  oReq.open("POST", "http://slsh.iki.fi:666");
+  oReq.open("POST", "http://slsh.iki.fi:666", true);
   // needs permissions: text/plain does not
   // oReq.setRequestHeader("Content-Type", "application/json");
-  oReq.send(stuff);
+  oReq.send(JSON.stringify(stuff));
   return false;
 }
 
 function createDefenderSelection() {
   var dropDown = document.createElement('select');
   dropDown.name = 'defender_id';
+  dropDown.id = dropDown.name;
+  dropDown.multiple = false;
   dropDown.options.add( new Option('Select defender', '-1', true, true));
   for (var i in pokemon) {
     var pokeName = pokemon[i].pokemonId;
@@ -49,6 +61,8 @@ function createDefenderMoveSelection(selection) {
     if (pokeName === selection) {
       var dropDownFast = document.createElement('select');
       dropDownFast.name = 'defender_fastmove';
+      dropDownFast.id = dropDownFast.name;
+      dropDownFast.multiple = false;
       for (var j = 0; j < pokemon[i]['quickMoves'].length; j++) {
         var moveName = pokemon[i]['quickMoves'][j];
         moveName = moveName.replace('_FAST','');
@@ -59,6 +73,8 @@ function createDefenderMoveSelection(selection) {
       }
       var dropDownCharged = document.createElement('select');
       dropDownCharged.name = 'defender_chargemove';
+      dropDownCharged.id = dropDownCharged.name;
+      dropDownCharged.multiple = false;
       for (var j = 0; j < pokemon[i]['cinematicMoves'].length; j++) {
         var moveName = pokemon[i]['cinematicMoves'][j];
         moveName = moveName.replace('_', ' ');
@@ -75,6 +91,7 @@ function createDefenderMoveSelection(selection) {
       var inputCp = document.createElement('input');
       inputCp.type = 'text';
       inputCp.name = 'defender_cp';
+      inputCp.id = inputCp.name;
       inputCp.value = '41777';
 
       var defFields = document.getElementById('defender');
