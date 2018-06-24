@@ -37,6 +37,13 @@ function createDefenderSelection() {
 
 function createDefenderMoveSelection(selection) {
   console.log("got selection " + selection);
+  if (selection === '-1') {
+    var defFields = document.getElementById('defender');
+    while(defFields.childElementCount > 1) {
+      defFields.removeChild(defFields.lastChild);
+    }
+    return;
+  }
   for (var i in pokemon) {
     var pokeName = pokemon[i].pokemonId;
     if (pokeName === selection) {
