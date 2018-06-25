@@ -31,7 +31,6 @@ function reqListener () {
     tr.insertCell().appendChild(document.createTextNode(resultItem.overallRating));
   }
   document.getElementById('results').appendChild(table);
-  //document.getElementById('results').innerHTML = this.responseText;
 }
 function sendStuff() {
   var defIdElem = document.getElementById('defender_id');
@@ -48,8 +47,8 @@ function sendStuff() {
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", reqListener);
   oReq.open("POST", "https://fhu3z1t7c9.execute-api.eu-west-1.amazonaws.com/prod/LambdaFunctionOverHttps", true);
-  // needs permissions: text/plain does not
-  // oReq.setRequestHeader("Content-Type", "application/json");
+  // note that this needs permissions: text/plain does not
+  oReq.setRequestHeader("Content-Type", "application/json");
   oReq.send(JSON.stringify(stuff));
   return false;
 }
