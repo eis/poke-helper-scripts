@@ -20,7 +20,7 @@ function reqListener () {
   headerRow.insertCell().appendChild(document.createTextNode('overall'));
   for (var i = 0; i < results.length; i++) {
     var resultItem = results[i];
-    var tr = tbl.insertRow();
+    var tr = table.insertRow();
     tr.insertCell().appendChild(document.createTextNode(resultItem.pokemon));
     tr.insertCell().appendChild(document.createTextNode(resultItem.level));
     tr.insertCell().appendChild(document.createTextNode(resultItem.iv));
