@@ -18,7 +18,7 @@ function sendStuff() {
   };
   var oReq = new XMLHttpRequest();
   oReq.addEventListener("load", reqListener);
-  oReq.open("POST", "http://slsh.iki.fi:666", true);
+  oReq.open("POST", "https://fhu3z1t7c9.execute-api.eu-west-1.amazonaws.com/prod/LambdaFunctionOverHttps", true);
   // needs permissions: text/plain does not
   // oReq.setRequestHeader("Content-Type", "application/json");
   oReq.send(JSON.stringify(stuff));
