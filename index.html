@@ -5,6 +5,10 @@
 //    pokemon      level        iv    cp moveset  power  effectiveCombatTime  overallRating
 //    dragonite  34.5  14/15/12  3263    dt/o  867.9                 20.6          409.1
 function reqListener () {
+  var resultsTable = document.getElementById('results_table');
+  if (resultsTable !== null) {
+    resultsTable.parentNode.removeChild(resultsTable);
+  }
   var table = document.createElement('table'),
       results = JSON.parse(this.responseText);
   table.id = "results_table";
