@@ -1,8 +1,37 @@
 <html>
 <head>
 <script type="text/javascript">
+// Should create a table like
+//    pokemon      level        iv    cp moveset  power  effectiveCombatTime  overallRating
+//    dragonite  34.5  14/15/12  3263    dt/o  867.9                 20.6          409.1
 function reqListener () {
-  document.getElementById('results').innerHTML = this.responseText;
+  var table = document.createElement('table'),
+      results = JSON.parse(this.responseText);
+  table.id = "results_table";
+  var header = table.createTHead();
+  var headerRow = header.insertRow();
+  headerRow.insertCell().appendChild(document.createTextNode('pokemon'));
+  headerRow.insertCell().appendChild(document.createTextNode('level'));
+  headerRow.insertCell().appendChild(document.createTextNode('iv'));
+  headerRow.insertCell().appendChild(document.createTextNode('cp'));
+  headerRow.insertCell().appendChild(document.createTextNode('moveset'));
+  headerRow.insertCell().appendChild(document.createTextNode('power'));
+  headerRow.insertCell().appendChild(document.createTextNode('time'));
+  headerRow.insertCell().appendChild(document.createTextNode('overall'));
+  for (var i = 0; i < results.length; i++) {
+    var resultItem = results[i];
+    var tr = tbl.insertRow();
+    tr.insertCell().appendChild(document.createTextNode(resultItem.pokemon));
+    tr.insertCell().appendChild(document.createTextNode(resultItem.level));
+    tr.insertCell().appendChild(document.createTextNode(resultItem.iv));
+    tr.insertCell().appendChild(document.createTextNode(resultItem.cp));
+    tr.insertCell().appendChild(document.createTextNode(resultItem.moveset));
+    tr.insertCell().appendChild(document.createTextNode(resultItem.power));
+    tr.insertCell().appendChild(document.createTextNode(resultItem.effectiveCombatTime));
+    tr.insertCell().appendChild(document.createTextNode(resultItem.overallRating));
+  }
+  document.getElementById('results').appendChild(table);
+  //document.getElementById('results').innerHTML = this.responseText;
 }
 function sendStuff() {
   var defIdElem = document.getElementById('defender_id');
