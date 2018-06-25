@@ -8,21 +8,6 @@ import copy
 # https://www.pokebattler.com/fights/attackers/ABRA/quickMoves/ZEN_HEADBUTT_FAST/cinMoves/PSYSHOCK/levels/34/ivs/FEF/defenders/MEWTWO/quickMoves/CONFUSION_FAST/cinMoves/FOCUS_BLAST/cp/49430/strategies/DODGE_SPECIALS/DEFENSE_RANDOM_MC?includeDetails=true&dodgeStrategy=DODGE_REACTION_TIME&weatherCondition=NO_WEATHER&seed=1529739050358
 # https://fight.pokebattler.com/fights/attackers/ABRA/quickMoves/ZEN_HEADBUTT_FAST/cinMoves/PSYSHOCK/levels/34/ivs/FEF/defenders/MEWTWO/quickMoves/CONFUSION_FAST/cinMoves/FOCUS_BLAST/cp/49430/strategies/DODGE_SPECIALS/DEFENSE_RANDOM_MC?includeDetails=true&dodgeStrategy=DODGE_REACTION_TIME&weatherCondition=NO_WEATHER&seed=1529739050358
 
-# inputstr = sys.stdin.read()
-inputstr = """[ {
-        "pokemon": "DRAGONITE",
-        "individualStamina": 12,
-        "cinematicMove": "OUTRAGE",
-        "quickMove": "DRAGON_TAIL_FAST",
-        "cp": 3263,
-        "name": "",
-        "id": 1392252,
-        "level": "34.5",
-        "individualDefense": 15,
-        "individualAttack": 14
-    } ]"""
-respjson = json.loads(inputstr)
-
 def format_move(string):
   return ''.join(list(map(lambda x: x[0], string.lower().split('_'))))
 
@@ -36,6 +21,7 @@ def fetch_for(pokemon, defender='MEWTWO', def_quick='CONFUSION_FAST', def_charge
     pokemon['pokemon'], pokemon['quickMove'], pokemon['cinematicMove'], pokemon['level'], format_ivs(pokemon['individualAttack'], pokemon['individualDefense'], pokemon['individualStamina']),
     defender, def_quick, def_charge, def_cp)
   # print('url ' + url)
+
   conn = http.client.HTTPSConnection('fight.pokebattler.com', 443)
   # conn.set_debuglevel(1)
   conn.putrequest('GET', url)
@@ -49,15 +35,14 @@ def fetch_for(pokemon, defender='MEWTWO', def_quick='CONFUSION_FAST', def_charge
   r = conn.getresponse()
   return r.read().decode("utf-8")
 
-def do_the_pokemon():
+def do_the_pokemon(respjson):
   results = []
 
-  for pokemon in respjson:
+  for pokemon in respjson['pokemons']:
     #print(json.dumps(pokemon, indent=4))
-    #break
 
-    # resp = fetch_for(pokemon, sys.argv[1].upper(), sys.argv[2].upper(), sys.argv[3].upper(), sys.argv[4].upper())
-    resp = fetch_for(pokemon)
+    resp = fetch_for(pokemon, respjson['defenderId'], respjson['fastMove'], respjson['chargedMove'], respjson['defenderCp'])
+    # resp = fetch_for(pokemon)
     fightdata = json.loads(resp)
 
     # with open('data-formatted.json') as f:
@@ -79,9 +64,6 @@ def do_the_pokemon():
 
     results.append(fightdata)
 
-
-
-  #print(df.sort_values('overallRating', ascending=False))
   return results
 
 
@@ -95,13 +77,17 @@ def handler(event, context):
       - tableName: required for operations that interact with DynamoDB
       - payload: a parameter to pass to the operation being performed
     '''
-    print("Received event: " + json.dumps(event, indent=2))
+    # print("Received event: " + json.dumps(event, indent=2))
 
     body = json.loads(event['body'])
 
     
     return {
         'statusCode': 200,
-        'body': json.dumps(do_the_pokemon(), indent=4)
+        'body': json.dumps(do_the_pokemon(body), indent=4),
+        'headers': {
+           'Content-Type': 'application/json', 
+           'Access-Control-Allow-Origin': 'https://eis.github.io' 
+       }
     }
 
