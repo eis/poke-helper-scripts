@@ -1,2 +1,4 @@
 data*.json
 *.zip
+__pycache__
+venv
