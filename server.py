@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import request
 
-from fetch-fight-stats import *
+from aws/LambdaFunctionOverHttps import *
 
 class LocalFlask(Flask):
     def process_response(self, response):
