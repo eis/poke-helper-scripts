@@ -103,7 +103,7 @@ class LocalFlask(Flask):
 app = LocalFlask(__name__)
 app.debug = False
 
-@app.route("/fights")
+@app.route("/fights", methods=['GET', 'POST'])
 def fights():
     if not request.json:
         resp = app.make_response('{"msg":"No content"}')
