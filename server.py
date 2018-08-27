@@ -2,6 +2,7 @@ from __future__ import print_function
 
 from flask import Flask
 from flask import request
+from time import strftime
 
 import json
 import http.client
@@ -103,13 +104,24 @@ class LocalFlask(Flask):
 app = LocalFlask(__name__)
 app.debug = False
 
+@app.after_request
+def after_request(response):
+    timestamp = strftime('[%Y-%b-%d %H:%M]')
+    print('%s %s %s %s %s %s' % (timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status))
+    return response
+
 @app.route("/fights", methods=['GET', 'POST'])
 def fights():
     if not request.json:
         resp = app.make_response('{"msg":"No content"}')
     else:
         resp = app.make_response(json.dumps(request.json, indent=4))
-    resp.headers['Access-Control-Allow-Origin'] = 'https://eis.github.io'
+    resp.headers['Access-Control-Allow-Origin'] = '*' # https://eis.github.io'
     resp.headers['Content-Type'] = 'application/json'
     return resp
+
+if __name__ == '__main__':
+    context = ('/etc/ssl/certs/CA-client-certificate-test.pem', 
+        '/etc/ssl/certs/CA-client-certificate-test.key') #certificate and key files
+    app.run(debug=False, ssl_context=context, host='0.0.0.0')
 
