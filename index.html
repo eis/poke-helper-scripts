@@ -52,7 +52,7 @@ function sendStuff() {
   oReq.addEventListener("load", reqListener);
   oReq.open("POST", "http://slsh.iki.fi:5000/fights", true);
   // note that below needs permissions: text/plain does not
-  // oReq.setRequestHeader("Content-Type", "application/json");
+  oReq.setRequestHeader("Content-Type", "application/json");
   oReq.send(JSON.stringify(stuff));
   return false;
 }
