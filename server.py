@@ -104,24 +104,19 @@ class LocalFlask(Flask):
 app = LocalFlask(__name__)
 app.debug = False
 
-@app.after_request
-def after_request(response):
-    timestamp = strftime('[%Y-%b-%d %H:%M]')
-    print('%s %s %s %s %s %s' % (timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status))
-    return response
-
-@app.route("/fights", methods=['GET', 'POST'])
+@app.route("/fights", methods=['GET', 'POST','OPTIONS'])
 def fights():
     if not request.json:
         resp = app.make_response('{"msg":"No content"}')
     else:
-        resp = app.make_response(json.dumps(request.json, indent=4))
-    resp.headers['Access-Control-Allow-Origin'] = '*' # https://eis.github.io'
+        resp = app.make_response(json.dumps(do_the_pokemon(request.json), indent=4))
+    resp.headers['Access-Control-Allow-Origin'] = 'https://eis.github.io'
+    resp.headers['Access-Control-Allow-Headers'] = 'Content-Type'
     resp.headers['Content-Type'] = 'application/json'
     return resp
 
 if __name__ == '__main__':
-    context = ('/etc/ssl/certs/CA-client-certificate-test.pem', 
-        '/etc/ssl/certs/CA-client-certificate-test.key') #certificate and key files
+    context = ('/etc/letsencrypt/live/slsh.iki.fi/cert.pem', 
+        '/etc/letsencrypt/live/slsh.iki.fi/privkey.pem') #certificate and key files
     app.run(debug=False, ssl_context=context, host='0.0.0.0')
 

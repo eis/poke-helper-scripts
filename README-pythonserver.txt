@@ -4,5 +4,5 @@
 . venv/bin/activate
 pip3 install flask
 pip3 install pandas
-python3 server.py
+python3 server.py # or nohup python3 server.py &
 
