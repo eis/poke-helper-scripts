@@ -149,12 +149,16 @@ function createDefenderMoveSelection(selection) {
       while(defFields.childElementCount > 1) {
         defFields.removeChild(defFields.lastChild);
       }
+      defFields.appendChild(document.createElement('br'));
       defFields.appendChild(labelFast);
       defFields.appendChild(dropDownFast);
+      defFields.appendChild(document.createElement('br'));
       defFields.appendChild(labelCharged);
       defFields.appendChild(dropDownCharged);
+      defFields.appendChild(document.createElement('br'));
       defFields.appendChild(labelCp);
       defFields.appendChild(inputCp);
+      defFields.appendChild(document.createElement('br'));
       break;
     }
   }
