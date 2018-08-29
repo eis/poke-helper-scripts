@@ -38,9 +38,8 @@ function reqListener () {
   document.getElementById('submitbutton').disabled = false;
 }
 function connectivityErrorListener(err) {
-  console.error(err);
-  console.error(err.target);
-  document.getElementById('results').innerHTML = '<b id="results_table" style="color:red">backend does not respond properly (' + err.target.message +')</b>';
+  document.getElementById('results').innerHTML =
+   '<p id="results_table"><b style="color:red">backend does not respond properly</b> (see console for the exact error)</p>';
   document.getElementById('submitbutton').disabled = false;
 }
 function sendStuff() {
