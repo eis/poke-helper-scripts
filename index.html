@@ -1,6 +1,8 @@
 <html>
 <head>
 <script type="text/javascript">
+var results;
+
 // Should create a table like
 //    pokemon      level        iv    cp moveset  power  effectiveCombatTime  overallRating
 //    dragonite  34.5  14/15/12  3263    dt/o  867.9                 20.6          409.1
@@ -9,8 +11,8 @@ function reqListener () {
   if (resultsTable !== null) {
     resultsTable.parentNode.removeChild(resultsTable);
   }
-  var table = document.createElement('table'),
-      results = JSON.parse(this.responseText);
+  var table = document.createElement('table');
+  results = JSON.parse(this.responseText);
   results.sort(function(a, b){
     var keyA = a.overall,
         keyB = b.overall;
