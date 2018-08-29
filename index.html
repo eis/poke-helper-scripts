@@ -38,12 +38,12 @@ function reqListener () {
   document.getElementById('submitbutton').disabled = false;
 }
 function connectivityErrorListener() {
-  document.getElementById('results').innerHTML('<b id="results_table" style="color:red">backend does not respond</b>');
+  document.getElementById('results').innerHTML = '<b id="results_table" style="color:red">backend does not respond</b>';
   document.getElementById('submitbutton').disabled = false;
 }
 function sendStuff() {
   document.getElementById('submitbutton').disabled = true;
-  document.getElementById('results').innerHTML('<img id="results_table" src="https://i.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy-downsized.gif" />');
+  document.getElementById('results').innerHTML = '<img id="results_table" src="https://i.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy-downsized.gif" />';
   var defIdElem = document.getElementById('defender_id');
   var fastMoveElem = document.getElementById('defender_fastmove');
   var chargedMoveElem = document.getElementById('defender_chargemove');
