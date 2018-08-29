@@ -37,8 +37,8 @@ function reqListener () {
   document.getElementById('results').appendChild(table);
   document.getElementById('submitbutton').disabled = false;
 }
-function connectivityErrorListener() {
-  document.getElementById('results').innerHTML = '<b id="results_table" style="color:red">backend does not respond</b>';
+function connectivityErrorListener(err) {
+  document.getElementById('results').innerHTML = '<b id="results_table" style="color:red">backend does not respond properly (' + err.toString() +')</b>';
   document.getElementById('submitbutton').disabled = false;
 }
 function sendStuff() {
