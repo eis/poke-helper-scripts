@@ -1,7 +1,16 @@
 from flask import Flask
 from flask import request
 
-from aws/LambdaFunctionOverHttps import *
+def exec_full(filepath):
+    import os
+    global_namespace = {
+        "__file__": filepath,
+        "__name__": "__main__",
+    }
+    with open(filepath, 'rb') as file:
+        exec(compile(file.read(), filepath, 'exec'), global_namespace)
+
+exec_full('aws/LambdaFunctionOverHttps.py')
 
 class LocalFlask(Flask):
     def process_response(self, response):
