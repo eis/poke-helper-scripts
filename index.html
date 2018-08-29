@@ -144,21 +144,24 @@ function createDefenderMoveSelection(selection) {
       inputCp.name = 'defender_cp';
       inputCp.id = inputCp.name;
       inputCp.value = '41777';
+      inputCp.size = 20;
 
       var defFields = document.getElementById('defender');
       while(defFields.childElementCount > 1) {
         defFields.removeChild(defFields.lastChild);
       }
-      defFields.appendChild(document.createElement('br'));
-      defFields.appendChild(labelFast);
-      defFields.appendChild(dropDownFast);
-      defFields.appendChild(document.createElement('br'));
-      defFields.appendChild(labelCharged);
-      defFields.appendChild(dropDownCharged);
-      defFields.appendChild(document.createElement('br'));
-      defFields.appendChild(labelCp);
-      defFields.appendChild(inputCp);
-      defFields.appendChild(document.createElement('br'));
+      var table = document.createElement('table');
+      table.setAttribute('border', '0');
+      var row = table.insertRow();
+      row.insertCell().appendChild(labelFast);
+      row.insertCell().appendChild(dropDownFast);
+      row = table.insertRow();
+      row.insertCell().appendChild(labelCharged);
+      row.insertCell().appendChild(dropDownCharged);
+      row = table.insertRow();
+      row.insertCell().appendChild(labelCp);
+      row.insertCell().appendChild(inputCp);
+      defFields.appendChild(table);
       break;
     }
   }
